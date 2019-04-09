@@ -91,8 +91,8 @@ pub_Fig3D_plot_screening_heatmaps.m
 
 
 
-#####
+############################################################
 The code is developed with MatLab2017b and Python3.6 and is distributed under the terms of the GNU General Public License (please read copyright_and_license and LICENSE files for details.
-#####
+############################################################
 This project is part of the work by Michael Zimmermann, Maria Zimmermann-Kogadeeva, Rebekka Wegmann and Andrew L. Goodman.
-#####
+############################################################
