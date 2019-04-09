@@ -4,10 +4,10 @@ Mapping human microbiome drug metabolism by gut bacteria and their genes
 Data analysis and visualization pipelines for screening the capacity of common gut bacteria to metabolize oral drugs.
 The project consists of four pipelines:
 
-############################################################
+#####
 Analysis schemes are provided in AnalysisSchemes folder.
 Global variables and input/output file names for all pipelines are defined in Drug_bacteria_gene_mapping_variables.m.
-############################################################
+#####
 
 ##### PIPELINE 1 ###########################################
 1) Analyze drug screen (scheme is provided in pipeline_drug_screen_analysis.pdf)
@@ -90,10 +90,9 @@ pub_Fig3C_plot_screening_bars.m
 pub_Fig3D_plot_screening_heatmaps.m
 
 
-############################################################
-############################################################
-############################################################
+
+#####
 The code is developed with MatLab2017b and Python3.6 and is distributed under the terms of the GNU General Public License (please read copyright_and_license and LICENSE files for details.
-############################################################
+#####
 This project is part of the work by Michael Zimmermann, Maria Zimmermann-Kogadeeva, Rebekka Wegmann and Andrew L. Goodman.
-############################################################
+#####
