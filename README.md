@@ -89,7 +89,17 @@ Scripts producing the figures:
 pub_Fig3C_plot_screening_bars.m
 pub_Fig3D_plot_screening_heatmaps.m
 
-
+############################################################
+###### UTILITIES FOR PIPELINE 1 ############################
+Folder ChemicalStructureAnalysis contains two Python scripts, 
+pub_Fig1D_chemical_similarity_analysis.py and
+pub_find_chemical_functional_groups.py, 
+which are used to find maximal common substructures of given molecules, 
+and determine presence of chemical functional groups, respectively. 
+The scripts can be run as
+python pub_Fig1D_chemical_similarity_analysis.py 
+python pub_find_chemical_functional_groups.py
+Chemical clusters and input/output files are defined inside the scripts.
 
 ############################################################
 #####
