@@ -2,10 +2,15 @@
 Mapping human microbiome drug metabolism by gut bacteria and their genes
 
 Data analysis and visualization pipelines for screening the capacity of common gut bacteria to metabolize oral drugs.
-The project consists of four pipelines:
+The project consists of four pipelines.
 
 #####
-Analysis schemes are provided in AnalysisSchemes folder.
+Data files and Analysis schemes are provided on FigShare: 
+https://doi.org/10.6084/m9.figshare.8119058.v1
+
+To run the pipelines, please extract the archived Data files into a subfolder "Data" in the master directory. 
+
+#####
 Global variables and input/output file names for all pipelines are defined in Drug_bacteria_gene_mapping_variables.m.
 #####
 

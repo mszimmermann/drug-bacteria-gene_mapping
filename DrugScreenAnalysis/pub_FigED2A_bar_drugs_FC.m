@@ -12,6 +12,7 @@ Drug_bacteria_gene_mapping_variables
 % takes as input infile_drug_experiment
 % takes as input outfile_Table3_drug_fold_changes
 % takes as input outfile_table_FCclustergram
+% takes as input outfile_Table_individual_drug_fold_changes
 % outfile_figED2A_bar_drugFC = ['Output' filesep 'FigE2A_bar_drugFC_in_clustergram_order.ps'];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -39,13 +40,13 @@ drugAnalysisResults = readtable(outfile_Table3_drug_fold_changes,...
 drugAnalysisColumnNames = drugAnalysisResults.Properties.VariableNames;                            
 %convert table to cell array
 drugAnalysisResults = table2cell(drugAnalysisResults);
-FCcolumns = cellfun(@(x) ~isempty(strfind(x, 'FC')) &...
-                         isempty(strfind(x, 'FCSTD')) &...
-                         isempty(strfind(x, 'DrugAdaptive')),...
+FCcolumns = cellfun(@(x) contains(x, 'FC') &...
+                         ~contains(x, 'FCSTD') &...
+                         ~contains(x, 'DrugAdaptive'),...
                          drugAnalysisColumnNames);
-FCSTDcolumns = cellfun(@(x) ~isempty(strfind(x, 'FCSTD')),...
+FCSTDcolumns = cellfun(@(x) contains(x, 'FCSTD'),...
                          drugAnalysisColumnNames);
-PFDRcolumns = cellfun(@(x) ~isempty(strfind(x, 'p_FDR')),...
+PFDRcolumns = cellfun(@(x) contains(x, 'p_FDR'),...
                          drugAnalysisColumnNames);                     
 drugFC12to0_t0toCTRL_combined = cell2mat(drugAnalysisResults(:,FCcolumns))';
 drugFC12to0_t0toCTRL_STDcombined = cell2mat(drugAnalysisResults(:,FCSTDcolumns))';
@@ -53,21 +54,44 @@ drugP12to0_t0toCTRL_combined = cell2mat(drugAnalysisResults(:,PFDRcolumns))';
 
 DrugNames = drugAnalysisResults(:,ismember(drugAnalysisColumnNames, 'DrugName'));
 drugFCadaptive = cell2mat(drugAnalysisResults(:,...
-                          cellfun(@(x) ~isempty(strfind(x, 'DrugAdaptiveFC')),...
+                          cellfun(@(x) contains(x, 'DrugAdaptiveFC'),...
                           drugAnalysisColumnNames)));
 % get species names
 totSpeciesNamesSingle = cellfun(@(x) x(strfind(x, 'FC')+2:end),...
                                      drugAnalysisColumnNames(FCcolumns), 'unif', 0)';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % read clustergram to plot in clustergram order
-drugAnalysisClustergram = readtable(outfile_table_FCclustergram);
-FCcolumns = cellfun(@(x) ~isempty(strfind(x, 'FC')) &...
-                         isempty(strfind(x, 'FCSTD')) &...
-                         isempty(strfind(x, 'DrugAdaptive')),...
+drugAnalysisClustergram = readtable(outfile_table_FCclustergram,...
+                                'HeaderLines',1); %skip first line);
+FCcolumns = cellfun(@(x) contains(x, 'FC') &...
+                         ~contains(x, 'FCSTD') &...
+                         ~contains(x, 'DrugAdaptive'),...
                          drugAnalysisClustergram.Properties.VariableNames);
 
 clustergramSpecies = cellfun(@(x) x(strfind(x, 'FC')+2:end),...
                                   drugAnalysisClustergram.Properties.VariableNames(FCcolumns), 'unif', 0)';
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% read individual data for dexamethasone metabolite in scindens
+drugFoldChanges_individual = readtable(outfile_Table_individual_drug_fold_changes,...
+                            'HeaderLines', 1);
+drugAnalysisColumnNames_ind = drugFoldChanges_individual.Properties.VariableNames;
+FCcolumns_ind = cellfun(@(x) contains(x, 'x_Consumed'),...
+                         drugAnalysisColumnNames_ind);
+drugFoldChanges_individual_data = drugFoldChanges_individual{:,FCcolumns_ind};
+drugFC12to0_Species_ind = drugAnalysisColumnNames_ind(FCcolumns_ind);
+drugFC12to0_Species_ind = cellfun(@(x) strrep(x,'x_ConsumedA', ''),drugFC12to0_Species_ind, 'unif',0);
+drugFC12to0_Species_ind = cellfun(@(x) strrep(x,'x_ConsumedB', ''),drugFC12to0_Species_ind, 'unif',0);
+drugFC12to0_Species_ind = cellfun(@(x) strrep(x,'x_ConsumedC', ''),drugFC12to0_Species_ind, 'unif',0);
+drugFC12to0_Species_ind = cellfun(@(x) strrep(x,'x_ConsumedD', ''),drugFC12to0_Species_ind, 'unif',0);
+drugFC12to0_Species_ind = reshape(drugFC12to0_Species_ind,4,[])';
+
+% intersect species names (individual drug FC)
+[~, drug_orig_ind, drug_ind_idx] = intersect(lower(clustergramSpecies), lower(drugFC12to0_Species_ind(:,1)), 'stable');
+% add control at the end
+[~,idxdiff] = setdiff(lower(drugFC12to0_Species_ind(:,1)), lower(clustergramSpecies));
+drug_ind_idx = [idxdiff; drug_ind_idx];
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % for each drug, plot FC from 12 to 0 for the species
@@ -83,6 +107,15 @@ for j=1:length(ExperimentParameters.DrugNamesAbbr)
     % translate in %drug
     curSTD = 100*curSTD.*(2.^curFC)*log(2);
     curFC = 100*(1-2.^curFC);
+    
+    % get individual dots
+    % get the drugs and select current drug
+    drugFoldChanges_individual_drugIDX = cellfun(@(x) contains(lower(x), lower(ExperimentParameters.DrugNames{j})),...
+                                                drugFoldChanges_individual.DrugName);
+    % select one drug and reshape accroding to species
+    cur_individual_data = drugFoldChanges_individual_data(drugFoldChanges_individual_drugIDX,:);
+    cur_individual_data = reshape(cur_individual_data,4,[])';
+    cur_individual_data = cur_individual_data(drug_ind_idx,:);
     
     curP = drugP12to0_t0toCTRL_combined(:,j);
     curFC = curFC(idx);
@@ -103,6 +136,12 @@ for j=1:length(ExperimentParameters.DrugNamesAbbr)
         errorbar(curFC,1:length(curFC), curSTD, 'horizontal', '.k');
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % add individual data points
+    scatter(cur_individual_data(:),...
+            repmat(1:size(cur_individual_data,1),1,4),...
+            20,'b', 'filled')
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
     set(gca, 'YTick', 1:length(idx))
     set(gca, 'YTickLabel', strcat(totSpeciesNamesSingle(idx), '; ', num2str(curP,3)))
     set(gca, 'FontSize', 6)

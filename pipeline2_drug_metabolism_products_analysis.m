@@ -78,17 +78,17 @@ if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce figure 2f - barplot of dexamethaspone metabolism by single species
-pub_fig2F_dexamethasone_single_species_barplot
+% reproduce Extended Data Figure 4b - barplot of dexamethasone metabolism by single species
+pub_figED4b_dexamethasone_single_species_barplot
 % provided metabolite and drug data created in pipeline 1 and pub_workflow_analyze_drug_metabolism_products
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce figure 3a - B.thetaiotaomicron specific mass deltas 
+% reproduce Extended Data figure 6a - B.thetaiotaomicron specific mass deltas 
 % between drugs and metabolites
-pub_fig3A_btheta_specific_mzdeltas
+pub_figED6A_btheta_specific_mzdeltas
 % provided drug clustegram created in pipeline 1 and 
 % metabolite data created in pub_workflow_analyze_drug_metabolism_products
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

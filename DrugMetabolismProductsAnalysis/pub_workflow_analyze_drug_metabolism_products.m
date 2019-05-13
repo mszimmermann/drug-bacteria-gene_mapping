@@ -481,6 +481,12 @@ metFoundFC_t12t0 = zeros(size(drug_mets,1), length(fcMatrix_t0_cell));
 metFoundFDR_t12t0 = 2*ones(size(drug_mets,1), length(fcMatrix_t0_cell));
 metFoundFCSTD_t12t0 = zeros(size(drug_mets,1), length(fcMatrix_t0_cell));
 
+% save individual intensities for dexamethasone metabolite for plotting
+selectedMetIDX = find(abs(changingMets_merged_mass - 332.179) < massThreshold);
+met_DexInt_t0 = zeros(length(AssayConditions), 4);
+met_DexInt_t12 = zeros(length(AssayConditions), 4);
+
+
 for d = 1:length(AssayConditions)
     datafile = [infolder_drug_metabolite_data AssayConditions{d} '_RawDataListExportOptimized.csv'];
     % Import data of one experimental condition of the single species assays (24 pools, 2 timepoints)
@@ -518,7 +524,8 @@ for d = 1:length(AssayConditions)
     tic
     [fcMatrix_t0t12, fdrMatrix_t0t12, stdMatrix_t0t12,...
      intMatrix_t0mean, intMatrix_t0std,...
-     intMatrix_t12mean, intMatrix_t12std] = workflow_DifferentialAnalysisT0T12(totDataMat,...
+     intMatrix_t12mean, intMatrix_t12std,...
+     rawIntensity_t0,rawIntensity_t12] = workflow_DifferentialAnalysisT0T12(totDataMat,...
                                                                            ExperimentParameters,...
                                                                            totTime,...
                                                                            totDataPools);                                                                      
@@ -539,6 +546,11 @@ for d = 1:length(AssayConditions)
     fdrMatrix_t0 = fdrMatrix_t0_cell{d}(curIDXfull,:);
     fcMatrix_t12 = fcMatrix_t12_cell{d}(curIDXfull,:);
     fdrMatrix_t12 = fdrMatrix_t12_cell{d}(curIDXfull,:);
+    
+    for j=1:length(rawIntensity_t0)
+        rawIntensity_t0{j} = rawIntensity_t0{j}(:,curIDXfull);
+        rawIntensity_t12{j} = rawIntensity_t12{j}(:,curIDXfull);
+    end
             
     for j=1:length(curIDXmerged)
         curidx = find(drug_mets(:,1)==curIDXmerged(j));
@@ -555,6 +567,11 @@ for d = 1:length(AssayConditions)
             metFoundFC_t12t0(curidx(k),d) = fcMatrix_t0t12(j,curdrugidx(k));
             metFoundFDR_t12t0(curidx(k),d) = fdrMatrix_t0t12(j,curdrugidx(k));
             metFoundFCSTD_t12t0(curidx(k),d) = stdMatrix_t0t12(j,curdrugidx(k));
+            % only save individual intensities for C.scindens for plotting
+            if drug_mets(curidx(k),1) == selectedMetIDX
+                met_DexInt_t0(d,:) = rawIntensity_t0{curdrugidx(k)}(:,j);
+                met_DexInt_t12(d,:) = rawIntensity_t12{curdrugidx(k)}(:,j);
+            end
         end
     end
     fprintf('Calculated selected metabolite fold changes between t=12h and t=0h for %s (%s)\n', AssayConditions{d}, AssayConditionsSpecies{d});
@@ -568,7 +585,26 @@ clear TempResultsMetabolites TempStruct
 clear fcMatrix_t0t12 fdrMatrix_t0t12 stdMatrix_t0t12
 clear intMatrix_t0mean intMatrix_t0std intMatrix_t12mean intMatrix_t12std
 clear fcMatrix_t0 fdrMatrix_t0 fcMatrix_t12 fdrMatrix_t12
+clear rawIntensity_t0 rawIntensity_t12
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% save individual dexamethasone metabolite info to file
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% open the file for writing
+outfile_table_dexamethasone_metabolite_intensityT12 = 'Output\Table_dexamethasone_metabolite_int_t12t0.csv';
+fid = fopen(outfile_table_dexamethasone_metabolite_intensityT12, 'w');
+% print headers
+fprintf(fid, 'ParentDrug;MZ;RT;MZdelta;Species;A;B;C;D\n');
+for i=1:size(met_DexInt_t12,1)
+    fprintf(fid,'Dexamethasone;%.3f;%.3f;%.3f;%s;%.3f;%.3f;%.3f;%.3f\n',...
+        changingMets_merged_mass(selectedMetIDX),...
+        changingMets_merged_RT(selectedMetIDX),...
+        changingMets_merged_mass_delta(selectedMetIDX),...
+        AssayConditionsSpecies{i},...
+        met_DexInt_t12(i,:));
+end
+fclose(fid);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

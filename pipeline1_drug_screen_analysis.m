@@ -84,7 +84,7 @@ if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce figure E2 A
+% reproduce Extended Data figure 2A
 pub_FigED2A_bar_drugs_FC
 % given the table of drug fold chanhges, 
 % bar plot drug consumption % after 12h of incubation with each bacterium

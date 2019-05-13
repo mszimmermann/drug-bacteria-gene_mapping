@@ -10,8 +10,6 @@ fcMatrix_t0 = zeros(size(totDataMat,2),length(ExperimentParameters.DrugNames));
 pMatrix_t0 = zeros(size(totDataMat,2),length(ExperimentParameters.DrugNames));
 fcMatrix_t12 = zeros(size(totDataMat,2),length(ExperimentParameters.DrugNames));
 pMatrix_t12 = zeros(size(totDataMat,2),length(ExperimentParameters.DrugNames));
-fcMatrix_t0_individual = zeros(size(totDataMat,2),length(ExperimentParameters.DrugNames));
-fcMatrix_t12_individual = zeros(size(totDataMat,2),length(ExperimentParameters.DrugNames));
 
 for j=1:length(ExperimentParameters.DrugNames)
     IdxPool = ExperimentParameters.PoolNumbers(ExperimentParameters.PoolingScheme(j,:)==1);
@@ -34,8 +32,6 @@ for j=1:length(ExperimentParameters.DrugNames)
     [~, pMatrix_t12(:,j)] = ttest2(curData_t12,...
                                    curCtrl_t12,...
                                    'VarType', 'equal');
-                               
-
 end
                                    
 % adjust FDR

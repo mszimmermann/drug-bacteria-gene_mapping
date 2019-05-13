@@ -177,7 +177,13 @@ drugP12to0 = zeros(length(totSpecies_unique), length(ExperimentParameters.DrugNa
 %drug_outlierSTDcutoff = 5;
 %drug_outlierMEANcutoff = 0.2;
 
+% save individual fold changes for bar plots
+drugFC12to0_individual = cell(length(totSpecies_unique), 1);
+
+
 for i=1:length(totSpecies_unique)
+    % prepare individual drug fold change matrix
+     drugFC12to0_individual{i} = zeros(length(ExperimentParameters.DrugNamesAbbr),4);
      for j=1:length(ExperimentParameters.DrugNamesAbbr)
         IdxPool = find(ExperimentParameters.PoolingScheme(j,:)==1);
         curdrugidx = ismember(totCompounds_abbr, ExperimentParameters.DrugNamesAbbr{j});
@@ -199,6 +205,11 @@ for i=1:length(totSpecies_unique)
                                sqrt( (nanstd(curData_t12(~outliersData_t12,curdrugidx))./...
                                         nanmean(curData_t12(~outliersData_t12,curdrugidx))).^2 + ...
                                      (nanstd(curData_t0(~outliersData_t0,curdrugidx))./nanmean(curData_t0(~outliersData_t0,curdrugidx))).^2 )';
+        % save individual fold chanes for bar plots
+        curData_t12(outliersData_t12,curdrugidx) = nan;
+        curData_t0(outliersData_t0,curdrugidx) = nan;
+        drugFC12to0_individual{i}(j,:) = curData_t12(:,curdrugidx) ./ ...
+                                         curData_t0(:,curdrugidx); 
      end
      fprintf('Calculated fold changes t=12h to t=0h for %s (%s)\n', totSpecies_unique{i}, totSpeciesNamesSingle{i});
 end
@@ -208,7 +219,6 @@ clear IdxPool curData_t0 curData_t12 curdrugidx outliersData_t0 outliersData_t12
 % with Benjamini-Hochberg procedure
 drugFDR12to0 = mafdr(drugP12to0(:),'BHFDR', 1);
 drugFDR12to0 = reshape(drugFDR12to0, size(drugFC12to0));
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% to detect fast metabolizers (already at t=0), 
@@ -222,7 +232,12 @@ drugPtoCtrl_t0 = zeros(length(totSpecies_unique), length(ExperimentParameters.Dr
 drugPtoCtrl_t12 = zeros(length(totSpecies_unique), length(ExperimentParameters.DrugNamesAbbr));
 drugFCtoCtrlSTD_t0 = zeros(length(totSpecies_unique), length(ExperimentParameters.DrugNamesAbbr));
 
+% save individual fold changes to control at t=0h for bar plots
+drugFCtoCtrl_t0_indivudual = cell(length(totSpecies_unique), 1);
+
 for i=1:length(totSpecies_unique)
+    % prepare individual drug fold change matrix
+     drugFCtoCtrl_t0_indivudual{i} = zeros(length(ExperimentParameters.DrugNamesAbbr),4);
      for j=1:length(ExperimentParameters.DrugNamesAbbr)
         IdxPool = find(ExperimentParameters.PoolingScheme(j,:)==1);
         curdrugidx = ismember(totCompounds_abbr, ExperimentParameters.DrugNamesAbbr{j});
@@ -260,6 +275,9 @@ for i=1:length(totSpecies_unique)
         [~, drugPtoCtrl_t12(i,j)] = ttest2(curData_t12(~outliersData_t12,curdrugidx),...
                                           curCtrl_t12(~outliersCtrl_t12,curdrugidx),...
                                           'VarType', 'unequal');
+        curData_t0(outliersData_t0,curdrugidx) = nan;
+        drugFCtoCtrl_t0_indivudual{i}(j,:) = curData_t0(:,curdrugidx)./...
+            nanmean(curCtrl_t0(~outliersCtrl_t0,curdrugidx));
      end
      fprintf('Calculated fold changes to control for %s (%s)\n', totSpecies_unique{i}, totSpeciesNamesSingle{i});
 end
@@ -316,6 +334,10 @@ fastDrugs_idx = unique(fastDrugs_idx);
 drugFC12to0_t0toCTRL_combined = drugFC12to0;
 drugFC12to0_t0toCTRL_STDcombined = drugFCSTD12to0;
 
+% save individual fold changes for bar plots
+drugFC12to0_t0toCTRL_combined_individual = drugFC12to0_individual;
+
+
 drugP12to0_t0toCTRL_combined = drugFDR12to0;
 
 for idx=1:length(fastDrugs_idx)
@@ -326,11 +348,21 @@ for idx=1:length(fastDrugs_idx)
     drugFC12to0_t0toCTRL_combined(change_fc,j) = drugFCtoCtrl_t0(change_fc,j);
     drugFC12to0_t0toCTRL_STDcombined(change_fc,j) = drugFCtoCtrlSTD_t0(change_fc,j);
     drugP12to0_t0toCTRL_combined(change_fc,j) = drugFDRtoCtrl_t0(change_fc,j);
+    % set individual FC to FC to control at t=0
+    change_fc = find(change_fc);
+    for i = 1:length(change_fc)
+        drugFC12to0_t0toCTRL_combined_individual{change_fc(i)}(j,:) = ...
+            drugFCtoCtrl_t0_indivudual{change_fc(i)}(j,:);
+    end
 end
 % convert to log2 std
 drugFC12to0_t0toCTRL_STDcombined = (drugFC12to0_t0toCTRL_STDcombined./...
                                     (drugFC12to0_t0toCTRL_combined*log(2)));
-drugFC12to0_t0toCTRL_combined = log2(drugFC12to0_t0toCTRL_combined);                                
+drugFC12to0_t0toCTRL_combined = log2(drugFC12to0_t0toCTRL_combined);
+for i = 1:length(drugFC12to0_t0toCTRL_combined_individual)
+    drugFC12to0_t0toCTRL_combined_individual{i} = ...
+            log2(drugFC12to0_t0toCTRL_combined_individual{i});
+end
 clear IdxPool curData_t0 curData_t12 curdrugidx change_fc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -371,6 +403,36 @@ for j=1:size(drugFC12to0_t0toCTRL_combined,2)
                     drugFC12to0_t0toCTRL_combined(i,j),...
                     drugFC12to0_t0toCTRL_STDcombined(i,j),...
                     drugP12to0_t0toCTRL_combined(i,j));
+    end
+    fprintf(fid, '\n');
+end
+fclose(fid);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% save drug fold change for individual epliactes for bar plots
+outfile_Table_individual_drug_fold_changes = ['Output' filesep 'Table_individual_drug_fold_changes.csv'];
+fid = fopen(outfile_Table_individual_drug_fold_changes, 'w');
+fprintf(fid, ';');
+for i=1:length(totSpeciesNamesSingle)
+    fprintf(fid, ';%s;;;', totSpeciesNamesSingle{i});
+end
+fprintf(fid, '\n');
+fprintf(fid, 'DrugName;Drug adaptive FC threshold %%'); 
+for i=1:length(totSpeciesNamesSingle)
+    fprintf(fid, ';%% consumed A %s;%% consumed B %s;%% consumed C %s;%% consumed D %s', ...
+                totSpeciesNamesSingle{i},totSpeciesNamesSingle{i},...
+                totSpeciesNamesSingle{i}, totSpeciesNamesSingle{i});
+end
+fprintf(fid, '\n');
+for j=1:length(ExperimentParameters.DrugNames)
+    fprintf(fid,'%s',ExperimentParameters.DrugNames{j}); 
+    fprintf(fid, ';%.3f', 100*(1-2.^(-drugFCadaptive(j))));
+    for i=1:length(drugFC12to0_t0toCTRL_combined_individual)
+        fprintf(fid, ';%.3f;%.3f;%.3f;%.3f', ...
+                     100*(1-2.^drugFC12to0_t0toCTRL_combined_individual{i}(j,:)));
     end
     fprintf(fid, '\n');
 end

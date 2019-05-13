@@ -21,14 +21,14 @@ clear_var_flag = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Reproduce Figure 3C
-pub_Fig3C_plot_screening_bars
+pub_FigED6b_plot_screening_bars
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Reproduce Figure 3D
-pub_Fig3D_plot_screening_heatmaps
+pub_FigED6c_plot_screening_heatmaps
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if clear_var_flag
     clearvars -except clear_var_flag

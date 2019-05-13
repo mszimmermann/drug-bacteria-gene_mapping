@@ -21,8 +21,8 @@ addpath(genpath(['.' filesep]));
 clear_var_flag = 1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce Figures 5c,f,g and Figure E8d 
-pub_Fig5fgFigE8d_bar_drugmet_genesPident
+% reproduce Figures 5b,d,e and Extended Data Figure 10e 
+pub_Fig5bdeFigE10e_bar_drugmet_genesPident
 % provided the drug-bacteria clustergram, drug-gene table and 
 % BLAST results for genes and single species genomes, 
 % plot barplots of single species drug metabolism and protein identity
@@ -33,9 +33,9 @@ if clear_var_flag
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce Figures 5b - scatterplots between drug metabolism and protein
-% identity
-pub_Fig5b_scatter_drugmetabolism_genePident
+% reproduce Figures 5b and Extended data Figure 10c -
+% scatterplots between drug metabolism and protein identity
+pub_Fig5bED10c_scatter_drugmetabolism_genePident
 % provided the drug-bacteria clustergram, drug-gene table and 
 % BLAST results for genes and single species genomes, 
 % plot scatter plots of single species drug metabolism and protein identity
@@ -45,7 +45,7 @@ if clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % reproduce Figures 5d - drug-gene enrichment analysis
-pub_Fig5d_drug_gene_enrichment_analysis
+pub_Fig5c_drug_gene_enrichment_analysis
 % provided the drug-bacteria clustergram, drug-gene table and 
 % BLAST results for genes and single species genomes, 
 % perform enrichment analysis of identity to specific genes
@@ -68,25 +68,27 @@ if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce Figures 5i,j correlation bars between drug metabolism and
+% reproduce Figures 5g,h and Extended data figures 11 d,e,f -
+% correlation bars between drug metabolism and
 % community features (CFU, OTU, phylum, genus, protein abundances)
-pub_Fig5ij_correlate_community_metabolism_with_features
+pub_Fig5ghED11def_correlate_community_metabolism_with_features
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce Figure 2h - scatter plot of dexamethasone metabolism and community features
-pub_Fig2h_community_correlation_scatter
+% reproduce Extended data Figure 5f 
+% - scatter plot of dexamethasone metabolism and community features
+pub_FigED5f_community_correlation_scatter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce Figures 2hij - drug and metabolite profiles in communities
-pub_Fig5hij_community_drug_profiles
+% reproduce Figures 5f,g,h - drug and metabolite profiles in communities
+pub_Fig5fgh_community_drug_profiles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if clear_var_flag
@@ -94,7 +96,8 @@ if clear_var_flag
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% reproduce Figures 5h and calculate correlation between community
+% reproduce Figures 5f and Extended Data Figure 11a,b,e,f
+% and calculate correlation between community
 % drug metabolism and features
-pub_Fig5h_FigE9EF_community_correlation_scatter
+pub_Fig5f_FigE11abef_community_correlation_scatter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
