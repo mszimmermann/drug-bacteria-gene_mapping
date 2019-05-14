@@ -109,6 +109,9 @@ for i = 1:length(column_slope)
         end
         % remove duplicate species
         metSpecies = unique(metSpecies);
+        % remove "Clostridium sp" if it is in the list,
+        % because it is many species might match to it
+        metSpecies(cellfun(@(x) isequal(x, 'Clostridium sp_'),metSpecies))=[];
         %add _ to match OTU names
         metSpecies = cellfun(@(x) strrep(x, ' ', '_'), metSpecies, 'unif', 0);
         MVOTUmetSpecies = zeros(length(community_OTU_names),1);

@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-% Pipeline pub_FigED5f_community_correlation_scatter
+% Pipeline pub_Fig5fED11ab_diltiazem_scatter
 % plot community drug and metabolite correlation scatterplots
 % load data from file prepared in the script
 % pub_analyze_community_drug_metabolism.m
@@ -16,7 +16,7 @@ Drug_bacteria_gene_mapping_variables;
 % infile_community_ShortBRED_proteins = 'table_community_ShortBRED_proteins.csv';
 % outfile_table_community_drug_metabolism = 'table_community_drug_metabolism.csv'
 % intensityNoise = 5000; % noise intensity level 
-% outfile_FigED5f_dexamethasone_scatter
+% outfile_Fig5fED11ab_diltiazem_scatter
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % read community CFU and qPCR info
 community_cfu_table = readtable(infile_community_CFU_qPCR);
@@ -24,7 +24,7 @@ community_cfu_table = readtable(infile_community_CFU_qPCR);
 community_drug_metabolism_table = readtable(outfile_table_community_drug_metabolism);
 % get the slope of the drug and metabolite sfrom the table
 column_slope = cellfun(@(x) contains(lower(x),'slope') &...
-                            contains(lower(x), 'dexamethasone'), community_drug_metabolism_table.Properties.VariableNames);
+                            contains(lower(x), 'diltiazem'), community_drug_metabolism_table.Properties.VariableNames);
 column_slope = find(column_slope);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % intersect community names across OTU, protein, cfu and drug metabolism
@@ -34,7 +34,7 @@ column_slope = find(column_slope);
 %correlation table
 fig = figure('units','normalized','outerposition',[0 0 1 1]);
 spX = 2;
-spY = 2;
+spY = 3;
 spidx = 1;
 for i = 1:length(column_slope)
         curDrugName = community_drug_metabolism_table.Properties.VariableNames{column_slope(i)};
@@ -43,9 +43,11 @@ for i = 1:length(column_slope)
         curDrugName = curDrugName{2};
         
         curFeaturesMatrix = [community_cfu_table.CFUMean(idxCFU)...
-                             community_cfu_table.Cscindens16S_qPCR_(idxCFU)];
+                             community_cfu_table.Btheta16S_qPCR_(idxCFU)...
+                             community_cfu_table.BT_4096_qPCR_(idxCFU)];
         curFeatures = {'Community CFU'...
-                       'C.scindens 16S (qPCR)'};
+                       'B.thetaiotaomicron 16S (qPCR)'...
+                       'BT_4096 (qPCR)'};
 
         curSlope = community_drug_metabolism_table{idxMET, column_slope(i)};
 
@@ -59,9 +61,9 @@ for i = 1:length(column_slope)
             if spidx>spX*spY
                 suptitle(strrep(community_drug_metabolism_table.Properties.VariableNames{column_slope(i)}, 'Slope_', ''))
                 orient landscape
-                print(fig, '-painters', '-dpsc', '-r600', '-append', '-bestfit',...
-                         outfile_Fig5h_community_correlation_scatter);
-                close(fig);  
+%                 print(fig, '-painters', '-dpsc', '-r600', '-append', '-bestfit',...
+%                          outfile_Fig5h_community_correlation_scatter);
+%                 close(fig);  
                 fig = figure('units','normalized','outerposition',[0 0 1 1]);
                 spidx=1;
             end
@@ -84,7 +86,7 @@ for i = 1:length(column_slope)
 end   
 orient landscape
 print(fig, '-painters', '-dpdf', '-r600', '-bestfit',...
-     outfile_FigED5f_dexamethasone_scatter);
+     outfile_Fig5fED11ab_diltiazem_scatter);
 close(fig);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

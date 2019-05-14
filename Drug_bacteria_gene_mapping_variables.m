@@ -295,6 +295,16 @@ outfile_community_correlation_table = [DataOutput filesep 'TableS19_community_dr
 outfile_FigED5f_dexamethasone_scatter = [DataOutput filesep 'FigED5f_dexamethasone_community_correlation_scatter.pdf'];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% pub_Fig5fED11ab_diltiazem_scatter
+% takes as input infile_gene_drug_matrix 
+% takes as input infile_community_CFU_qPCR 
+% takes as input infile_community_OTU 
+% takes as input infile_community_ShortBRED_proteins 
+% takes as input outfile_table_community_drug_metabolism
+outfile_Fig5fED11ab_diltiazem_scatter = [DataOutput filesep 'Fig5fED11ab_diltiazem_community_correlation_scatter.pdf'];
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % pub_Fig5fgh_community_drug_profiles.m

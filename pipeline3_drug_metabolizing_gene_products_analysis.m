@@ -87,6 +87,16 @@ if clear_var_flag
     clearvars -except clear_var_flag
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% reproduce Diltiazem scatter in Figure 5f and Extended data Figure 11ab 
+% - scatter plot of dexamethasone metabolism and community features
+pub_Fig5fED11ab_diltiazem_scatter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if clear_var_flag
+    clearvars -except clear_var_flag
+end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % reproduce Figures 5f,g,h - drug and metabolite profiles in communities
 pub_Fig5fgh_community_drug_profiles
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
