@@ -413,7 +413,6 @@ fclose(fid);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % save drug fold change for individual epliactes for bar plots
-outfile_Table_individual_drug_fold_changes = ['Output' filesep 'Table_individual_drug_fold_changes.csv'];
 fid = fopen(outfile_Table_individual_drug_fold_changes, 'w');
 fprintf(fid, ';');
 for i=1:length(totSpeciesNamesSingle)
