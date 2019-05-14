@@ -6,9 +6,9 @@ The project consists of four pipelines.
 
 #####
 Data files and Analysis schemes are provided on FigShare: 
-https://doi.org/10.6084/m9.figshare.8119058.v1
+https://doi.org/10.6084/m9.figshare.8119058
 
-To run the pipelines, please extract the archived Data files into a subfolder "Data" in the master directory. 
+To run the pipelines, please extract the archived data files into a subfolder "Data_drug_bacteria_gene_mapping" in the master directory. 
 
 #####
 Global variables and input/output file names for all pipelines are defined in Drug_bacteria_gene_mapping_variables.m.
