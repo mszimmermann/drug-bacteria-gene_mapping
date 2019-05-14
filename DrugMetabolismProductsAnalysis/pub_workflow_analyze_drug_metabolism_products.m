@@ -592,7 +592,6 @@ clear rawIntensity_t0 rawIntensity_t12
 % save individual dexamethasone metabolite info to file
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % open the file for writing
-outfile_table_dexamethasone_metabolite_intensityT12 = 'Output\Table_dexamethasone_metabolite_int_t12t0.csv';
 fid = fopen(outfile_table_dexamethasone_metabolite_intensityT12, 'w');
 % print headers
 fprintf(fid, 'ParentDrug;MZ;RT;MZdelta;Species;A;B;C;D\n');
