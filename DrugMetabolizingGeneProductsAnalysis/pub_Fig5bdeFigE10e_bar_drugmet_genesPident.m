@@ -358,3 +358,35 @@ for drug_i = 1:length(drug_names_unique)
     end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Get NCBI Genome ID to Species name mapping and save to file
+% genome_id_species_name = cell(length(genome_id_species_number), 3);
+% delete_idx = [];
+% for i=1:length(genome_id_species_number)
+%     curid = find(cell2mat(AssaySpecies(:,1))==genome_id_species_number(i));
+%     genome_id_species_name{i,1} = genome_name_strain{i};
+%     if curid
+%         genome_id_species_name{i,2} = strjoin(AssaySpecies(curid,3:5), ' ');
+%         curid = strsplit(genome_name_strain{i}, ' ');
+%         genome_id_species_name{i,3} = curid{1};
+%     else
+%         delete_idx = [delete_idx; i];
+%     end
+% end
+% genome_id_species_name(delete_idx,:)=[];
+% 
+% genome_id_species_name_table = table(genome_id_species_name(:,3),...
+%     genome_id_species_name(:,1),...
+%     genome_id_species_name(:,2),...
+%     'VariableNames', {'GenomeID', 'GenomeInfo', 'SpeciesName'});
+% genome_id_species_name_table = unique(genome_id_species_name_table, 'rows');
+% fid = fopen('genome_id_to_species_conversion.tsv', 'w');
+% fprintf(fid, 'GenomeID\tGenomeInfo\tSpeciesName\n');
+% for i=1:size(genome_id_species_name_table)
+%     fprintf(fid, '%s\t%s\t%s\n', genome_id_species_name_table{i,1}{1},...
+%         genome_id_species_name_table{i,2}{1},...
+%         genome_id_species_name_table{i,3}{1});
+% end
+% fclose(fid);
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
